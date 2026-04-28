@@ -28,9 +28,7 @@ export default function Footer() {
           <ul className="flex flex-col gap-2">
             {[
               ["Nuestras Campers", "/campers"],
-              ["Servicios", "/servicios"],
-              ["Galería", "/galeria"],
-              ["Nosotros", "/nosotros"],
+              ["Contacto", "/contacto"]
             ].map(([l, h]) => (
               <li key={h}>
                 <a href={h} className="text-sm text-[#a8b8b0] hover:text-[#F7E7CE] transition-colors duration-200">
@@ -46,11 +44,11 @@ export default function Footer() {
           <h4 className="font-heading text-[.8rem] tracking-[.08em] uppercase text-[#e8cfa8] mb-4">Legal</h4>
           <ul className="flex flex-col gap-2">
             {[
-              ["Privacidad", "/privacidad"],
-              ["Cookies", "/cookies"],
-              ["Aviso Legal", "/aviso-legal"],
+              ["Privacidad", "/"],
+              ["Cookies", "/"],
+              ["Aviso Legal", "/"],
             ].map(([l, h]) => (
-              <li key={h}>
+              <li key={l}>
                 <a href={h} className="text-sm text-[#a8b8b0] hover:text-[#F7E7CE] transition-colors duration-200">
                   {l}
                 </a>

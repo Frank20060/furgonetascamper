@@ -19,6 +19,9 @@ export const metadata = {
   title: "FurgoCamper | Camionetas Camperizadas de Lujo",
   description: "Descubre nuestra colección de camionetas camperizadas artesanales. Aventura, libertad y confort en cada kilómetro.",
   keywords: "camper, furgoneta, camperizada, aventura, viaje, vanlife",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({ children }) {

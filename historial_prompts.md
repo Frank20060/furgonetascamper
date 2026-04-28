@@ -1,5 +1,9 @@
 # Historial de Prompts
 
+Antes de empezar, quiero decir que este .md está hecho para guardar las peticiones que se le hacen al agente, para que se pueda llevar un registro de los cambios realizados en el proyecto. 
+En agents.md he agregado la siguiente instruccion: 
+"Añade en el AGENTS.md, que los prompts se vayan guardando en este .md (añade este prompt tambien)"
+
 Este documento contiene el registro de las peticiones realizadas durante el desarrollo del proyecto FurgoCamper.
 
 ## Peticiones
@@ -39,5 +43,17 @@ Este documento contiene el registro de las peticiones realizadas durante el desa
 9. **Configuración de persistencia del historial**:
    - *Prompt:* "Añade en el AGENTS.md, que los prompts se vayan guardando en este .md (añade este prompt tambien)"
    - *Resultado:* Actualización de `AGENTS.md` con la nueva regla y actualización de este archivo.
+
+10. **Creación de favicon SVG**:
+    - *Prompt:* "haz un svn para usarlo en la pestaña de toda la app, que sea como una camper pero con vista frontal, con los colores de la page (usa como referencia la VOLKSWAGEN KOMBI clasica)"
+    - *Resultado:* Creación de `public/favicon.svg` con un diseño minimalista de una Kombi clásica y actualización de los metadatos en `layout.js`.
+
+11. **Efecto de brillo en el logo**:
+    - *Prompt:* "haz que tenga como un poco de shadow blanco (desde el codigo de el svg) para que en fondos osucuros destaque un poco mas"
+    - *Resultado:* Aplicación de un filtro `feDropShadow` blanco en el archivo `favicon.svg` para mejorar el contraste en fondos oscuros.
+
+12. **Corrección de keys duplicadas**:
+    - *Prompt:* "¿qué es este warning?? Encountered two children with the same key, '/'. ..."
+    - *Resultado:* Solución del error de React en `Footer.js` cambiando el atributo `key` para que use el texto del enlace en lugar de la URL (que estaba duplicada como `/`).
 
 

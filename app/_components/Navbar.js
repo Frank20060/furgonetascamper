@@ -8,7 +8,7 @@ export default function Navbar() {
           aria-label="FurgoCamper inicio"
           className="flex items-center gap-2 text-[#F7E7CE] font-heading text-[1.35rem] whitespace-nowrap transition-opacity duration-300 hover:opacity-80"
         >
-          <span className="text-[1.5rem]">⛺</span>
+          <img src="/favicon.svg" alt="Logo" className="h-8 w-auto" />
           <span>
             Furgo<em className="not-italic text-[#e8cfa8]">Camper</em>
           </span>
