@@ -480,4 +480,16 @@ kill -9 <PID>
 - Commitear `.env.local`
 - Asumir comportamiento de Next.js anterior a v16
 
+---
+
+## 11. Registro de Historial (OBLIGATORIO)
+
+**Es MANDATORIO registrar cada petición del usuario y su resultado en el archivo `historial_prompts.md` en la raíz del proyecto.**
+
+- ✅ Cada vez que el usuario realice una petición significativa, añade una entrada al historial.
+- ✅ Incluye el prompt exacto del usuario y un resumen del resultado/acción realizada.
+- ✅ Esto sirve como memoria a largo plazo de las decisiones de diseño y requisitos del proyecto.
+
+---
+
 <!-- END:nextjs-agent-rules -->
