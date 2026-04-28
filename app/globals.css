@@ -1,1 +1,36 @@
 @import "tailwindcss";
+
+/* Fuentes de Next.js expuestas como clases Tailwind */
+@theme inline {
+  --font-heading: var(--font-krona);
+  --font-body:    var(--font-ibm);
+}
+
+/* ── BASE ──────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-ibm), 'IBM Plex Sans', sans-serif;
+  background-color: #F7E7CE;
+  color: #0a1e1a;
+  line-height: 1.65;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-krona), 'Krona One', serif;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+a   { text-decoration: none; color: inherit; }
+ul  { list-style: none; padding: 0; margin: 0; }
+img { display: block; max-width: 100%; }
+
+/* ── HERO PSEUDO-ELEMENT ───────────────────────────────────── */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(26,74,64,.25) 0%, transparent 65%);
+  pointer-events: none;
+}
