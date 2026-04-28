@@ -1,5 +1,9 @@
 # 🚐 Proyecto IA6: Landing Page Camper Rent
 
+
+Este md esta para yo ir trasteando el enunciado del proyecto, y cuando no sepa que hacer, volver a consultar el enunciado y asi seguir el hilo de lo que vamos haciendo e ir modificandolo con lo que me va surgiendo.
+
+
 **Stack:** Next.js 16 (App Router) + PostgreSQL + Prisma + Auth.js  
 **Patrón:** MVC con gestión de roles (**EDITOR**, **ADMIN**).
 
@@ -17,10 +21,10 @@
 ## 🚀 TO-DO LIST (Seguimiento de Sprint)
 
 ### 🟢 Sprint 1: MVP Visual + Base de Datos
-* [ ] **Setup:** Iniciar proyecto Next.js 16 (Carpeta `src/`, Tailwind, etc.).
-* [ ] **Layout Base:** Crear el menú superior y pie de página corporativo.
-* [ ] **UI Landing:** Diseñar la Home y la sección de "Modelos" (usando datos mock).
-* [ ] **Infraestructura:** Configurar `docker-compose.yml` para PostgreSQL.
+* [x] **Setup:** Iniciar proyecto Next.js 16 (Carpeta `src/`, Tailwind, etc.).
+* [x] **Layout Base:** Crear el menú superior y pie de página corporativo.
+* [x] **UI Landing:** Diseñar la Home y la sección de "Modelos" (usando datos mock).
+* [] **Infraestructura:** Configurar `docker-compose.yml` para PostgreSQL.
 * [ ] **Prisma Schema:** Definir modelos `User`, `Model`, `Comment` y `ContactRequest`.
 * [ ] **Migraciones:** Aplicar el esquema a la BD (`npx prisma migrate dev`).
 * [ ] **Seed:** Crear y ejecutar el script de carga de furgonetas reales.

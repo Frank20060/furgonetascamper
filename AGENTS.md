@@ -9,6 +9,9 @@ La IA DEBE leer este documento completo ANTES de generar cualquier código.
 
 ---
 
+Este md esta hecho por mi usando la información que vamos usando en las sesiones de clase, para que el resultado sea lo mas profesional posible y que siga el hilo de lo que vamos haciendo.
+
+
 ## INSTRUCCIÓN PRINCIPAL
 
 AI: Cuando trabajes en este proyecto, SIEMPRE:
