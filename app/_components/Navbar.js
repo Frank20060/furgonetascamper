@@ -19,9 +19,6 @@ export default function Navbar() {
           {[
             ["Inicio", "/"],
             ["Nuestras Campers", "/campers"],
-            ["Servicios", "/servicios"],
-            ["Galería", "/galeria"],
-            ["Nosotros", "/nosotros"],
           ].map(([label, href]) => (
             <a
               key={href}
