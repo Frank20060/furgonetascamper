@@ -24,11 +24,11 @@ Este md esta para yo ir trasteando el enunciado del proyecto, y cuando no sepa q
 * [x] **Setup:** Iniciar proyecto Next.js 16 (Carpeta `src/`, Tailwind, etc.).
 * [x] **Layout Base:** Crear el menú superior y pie de página corporativo.
 * [x] **UI Landing:** Diseñar la Home y la sección de "Modelos" (usando datos mock).
-* [] **Infraestructura:** Configurar `docker-compose.yml` para PostgreSQL.
-* [ ] **Prisma Schema:** Definir modelos `User`, `Model`, `Comment` y `ContactRequest`.
+* [x] **Infraestructura:** Configurar `docker-compose.yml` para PostgreSQL.
+* ['SOLO CAMIONETAS'] **Prisma Schema:** Definir modelos `User`, `Model`, `Comment` y `ContactRequest`.
 * [ ] **Migraciones:** Aplicar el esquema a la BD (`npx prisma migrate dev`).
 * [ ] **Seed:** Crear y ejecutar el script de carga de furgonetas reales.
-* [ ] **Integración:** Renderizar la página de modelos consumiendo datos reales de Prisma.
+* [x] **Integración:** Renderizar la página de modelos consumiendo datos reales de Prisma.
 
 ### 🔵 Sprint 2: API, Seguridad y Despliegue
 * [ ] **Endpoints de API:**
