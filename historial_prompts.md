@@ -75,3 +75,7 @@ Este documento contiene el registro de las peticiones realizadas durante el desa
 18. **Ajuste de imagen hero a la derecha**:
     - *Prompt:* "Lo que quiero es que verticalmente este centrada y que horizontal este pegada a la esquina (que el corte quede con el final de la web)"
     - *Resultado:* Se actualizó `app/page.js` cambiando las clases a `right-0 top-1/2 -translate-y-1/2 object-right` con un `translate-x-[10%]` para que la imagen quede cortada y alineada exactamente con el borde derecho de la pantalla, manteniendo su centrado vertical.
+
+19. **Revisión del esquema de Prisma**:
+    - *Prompt:* "como ves los modelos que he cread??? Algun cambio, se puede poner que role String @default("USER") // "USER", "EDITOR", "ADMIN" solo hacepte esos tres casos tipo un select??"
+    - *Resultado:* Se actualizó `schema.prisma` reemplazando el `String` por un `enum Role` para limitar los valores posibles. También se agregaron las relaciones explícitas `@relation` en el modelo `Comment` para vincularlo correctamente con `User` y `Camper`.
