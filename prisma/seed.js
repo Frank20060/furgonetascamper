@@ -83,6 +83,91 @@ async function main() {
     ],
     skipDuplicates: true,
   });
+
+  const campers = await prisma.camper.findMany();
+
+  if (campers.length >= 2) {
+    // 1. Usuarios (1 de cada rol)
+    const adminUser = await prisma.user.upsert({
+      where: { email: 'admin@furgocamper.com' },
+      update: {},
+      create: {
+        email: 'admin@furgocamper.com',
+        password: 'password123',
+        name: 'Admin Principal',
+        role: 'ADMIN',
+      },
+    });
+
+    const editorUser = await prisma.user.upsert({
+      where: { email: 'editor@furgocamper.com' },
+      update: {},
+      create: {
+        email: 'editor@furgocamper.com',
+        password: 'password123',
+        name: 'Editor Contenido',
+        role: 'EDITOR',
+      },
+    });
+
+    const normalUser = await prisma.user.upsert({
+      where: { email: 'user@furgocamper.com' },
+      update: {},
+      create: {
+        email: 'user@furgocamper.com',
+        password: 'password123',
+        name: 'Usuario Viajero',
+        role: 'USER',
+      },
+    });
+
+    // 2. Comentarios sobre furgonetas
+    const comment1 = await prisma.comment.create({
+      data: {
+        text: '¡Una furgoneta increíble! Totalmente recomendada para el fin de semana.',
+        rating: 5,
+        userId: normalUser.id,
+        camperId: campers[0].id,
+      }
+    });
+
+    const comment2 = await prisma.comment.create({
+      data: {
+        text: 'Me encantó la experiencia, pero el colchón podría ser un poco más cómodo.',
+        rating: 4,
+        userId: editorUser.id,
+        camperId: campers[1].id,
+      }
+    });
+
+    // 3. Respuesta a un comentario
+    await prisma.comment.create({
+      data: {
+        text: 'Gracias por tu feedback, tomaremos nota para mejorar el colchón.',
+        rating: 5,
+        userId: adminUser.id,
+        comentID: comment2.id,
+      }
+    });
+  }
+
+  // 4. Contact Requests
+  await prisma.contactRequest.createMany({
+    data: [
+      {
+        name: 'Carlos Ruiz',
+        email: 'carlos.ruiz@example.com',
+        message: 'Hola, me gustaría saber si aceptan mascotas en la furgoneta Volkswagen.',
+      },
+      {
+        name: 'Ana Martínez',
+        email: 'ana.martinez@example.com',
+        message: 'Tengo una duda sobre la política de cancelación. ¿Podrían informarme?',
+      }
+    ]
+  });
+
+  console.log("Seed completado exitosamente.");
 }
 
 main()

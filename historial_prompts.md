@@ -79,3 +79,7 @@ Este documento contiene el registro de las peticiones realizadas durante el desa
 19. **Revisión del esquema de Prisma**:
     - *Prompt:* "como ves los modelos que he cread??? Algun cambio, se puede poner que role String @default("USER") // "USER", "EDITOR", "ADMIN" solo hacepte esos tres casos tipo un select??"
     - *Resultado:* Se actualizó `schema.prisma` reemplazando el `String` por un `enum Role` para limitar los valores posibles. También se agregaron las relaciones explícitas `@relation` en el modelo `Comment` para vincularlo correctamente con `User` y `Camper`.
+
+20. **Llenado del seed de la base de datos**:
+    - *Prompt:* "@[c:\Users\Frank\Desktop\Frank\M0613-DAW2\furgonetascamper\prisma\seed.js] Completa el seed con unos datos de prueba relacionados con los modelos, por ejemplo haz tres usuarios, uno por cada rol, haz algunos comentarios para algunas camionetas, o relacionados con otros comentarios, y haz dos ContactRequest"
+    - *Resultado:* Se añadió código en `seed.js` para crear 3 usuarios con distintos roles, insertar comentarios en las furgonetas camper, anidar una respuesta a un comentario y guardar solicitudes de contacto (`ContactRequest`).
