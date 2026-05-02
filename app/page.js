@@ -41,9 +41,9 @@ export default async function Home() {
 
         {/* Deco */}
         <span aria-hidden="true"
-          className="absolute right-[8%] top-1/2 -translate-y-1/2 text-[clamp(6rem,14vw,12rem)] pointer-events-none select-none"
-          style={{ opacity: .08 }}>
-          🏕️
+          className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none select-none z-0"
+          style={{ opacity: .2 }}>
+          <img src="memorycatcher-camping-5099382-removebg-preview.png" alt="Camper" className="h-[60vh] w-auto max-w-none object-contain object-right transform translate-x-[10%]" />
         </span>
       </section>
 
