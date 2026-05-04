@@ -147,6 +147,7 @@ async function main() {
         rating: 5,
         userId: adminUser.id,
         comentID: comment2.id,
+        camperId: campers[1].id, // Asegurar que la respuesta también esté vinculada a la camper
       }
     });
   }

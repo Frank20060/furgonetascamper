@@ -1,5 +1,6 @@
 import { prisma } from "@/src/lib/prisma";
 import { notFound } from "next/navigation";
+import CommentBox from "@/app/_components/CommentBox";
 
 // Generación de rutas estáticas en build-time (recomendado para performance)
 export async function generateStaticParams() {
@@ -17,6 +18,16 @@ export default async function CamperDetailPage({ params }) {
 
   const camper = await prisma.camper.findUnique({
     where: { slug },
+    include: {
+      comments: {
+        include: {
+          user: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
   });
 
   if (!camper) {
@@ -93,8 +104,10 @@ export default async function CamperDetailPage({ params }) {
               </a>
             </div>
           </div>
-
         </div>
+
+        {/* SECCIÓN DE COMENTARIOS */}
+        <CommentBox comments={camper.comments} />
       </div>
     </div>
   );

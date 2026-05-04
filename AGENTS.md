@@ -495,4 +495,56 @@ kill -9 <PID>
 
 ---
 
+# Guia de Desenvolupament: S15 - Auth.js, Rols, CRUD i Imatges (Next.js 16)
+
+Aquesta sessió se centra en la seguretat d'accés, la gestió d'usuaris amb rols i la pujada de fitxers al servidor, adaptant-se a la nova convenció de Next.js 16.
+
+## 1. Configuració d'Auth.js (Seguretat)
+S'implementa l'autenticació mitjançant **Auth.js** amb el proveïdor de credencials i hashing de contrasenyes amb `bcryptjs`.
+
+### src/auth.js
+Configura l'estratègia de sessió **JWT** i els callbacks per injectar `id` i `role` a la sessió de l'usuari.
+* **trustHost:** true per evitar errors en local sense AUTH_URL.
+* **Callbacks:** Copien les dades del perfil de l'usuari de la BD cap al token i la sessió.
+
+## 2. El nou `proxy.js` (Next.js 16)
+A la versió 16, el fitxer `middleware.js` es substitueix per `proxy.js` per interceptar peticions i protegir rutes.
+```javascript
+import { auth } from "@/auth";
+import { NextResponse } from "next/server";
+
+export default auth((req) => {
+  const { pathname } = req.nextUrl;
+  if (!pathname.startsWith("/admin")) return NextResponse.next();
+
+  // Bloqueig si no hi ha sessió o el rol no és ADMIN/EDITOR
+  if (!req.auth || !["ADMIN", "EDITOR"].includes(req.auth.user?.role)) {
+    const login = new URL("/login", req.url);
+    login.searchParams.set("callbackUrl", pathname);
+    return NextResponse.redirect(login);
+  }
+  return NextResponse.next();
+});
+```
+## 3. Ampliació del Model Prisma
+Es requereix actualitzar l'esquema per gestionar la identitat i els continguts multimèdia[cite: 1].
+
+* **Model User**: Afegeix camps `email`, `passwordHash` i un enum `Role` (ADMIN, EDITOR)[cite: 1].
+* **Model Post**: S'amplia amb `imageUrl`, `updatedAt` (amb `@updatedAt`) i la relació amb l'autor via `authorId`[cite: 1].
+* **Migracions en taules amb dades**: Cal usar `--create-only` i assignar manualment un `DEFAULT CURRENT_TIMESTAMP` al camp `updatedAt` al fitxer SQL per evitar errors de consistència[cite: 1].
+
+## 4. CRUD i Pujada d'Imatges (API)
+La seguretat real es garanteix als **Route Handlers** validant la sessió en cada operació de lectura o escriptura[cite: 1].
+
+* **requireEditor**: Helper per reutilitzar la lògica de comprovació de sessió i rol a les APIs[cite: 1].
+* **Pujada de fitxers**: Es rep la imatge com `multipart/form-data`, es valida el tipus MIME (JPEG, PNG, WEBP) i la mida (màxim 2MB)[cite: 1].
+* **Emmagatzematge**: Les imatges es guarden a `public/uploads/blog/` amb un nom únic generat amb `randomUUID()`[cite: 1].
+
+## 5. Checklist de Comandes i Setup
+* **Secrets**: Generar la clau d'encriptació amb `npx auth secret` i afegir-la a `.env` com `AUTH_SECRET`[cite: 1].
+* **Client Prisma**: És obligatori fer `npx prisma generate` després d'afegir el model `User` perquè el codi el reconegui[cite: 1].
+* **Seed**: Executar `npm run db:seed` per crear l'usuari administrador inicial (ex: admin@demo.local / demo1234)[cite: 1].
+* **Route Handlers v16**: Recordar que `params` és una Promise; cal fer `const { id } = await context.params`[cite: 1].
+
+
 <!-- END:nextjs-agent-rules -->

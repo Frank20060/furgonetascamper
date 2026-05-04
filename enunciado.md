@@ -25,7 +25,7 @@ Este md esta para yo ir trasteando el enunciado del proyecto, y cuando no sepa q
 * [x] **Layout Base:** Crear el menú superior y pie de página corporativo.
 * [x] **UI Landing:** Diseñar la Home y la sección de "Modelos" (usando datos mock).
 * [x] **Infraestructura:** Configurar `docker-compose.yml` para PostgreSQL.
-* ['SOLO CAMIONETAS'] **Prisma Schema:** Definir modelos `User`, `Model`, `Comment` y `ContactRequest`.
+* [x] **Prisma Schema:** Definir modelos `User`, `Model`, `Comment` y `ContactRequest`.
 * [x] **Migraciones:** Aplicar el esquema a la BD (`npx prisma migrate dev`).
 * [x] **Seed:** Crear y ejecutar el script de carga de furgonetas reales.
 * [x] **Integración:** Renderizar la página de modelos consumiendo datos reales de Prisma.
