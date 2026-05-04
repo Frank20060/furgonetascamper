@@ -58,7 +58,7 @@ export default async function Home() {
         <div className="max-w-[1280px] mx-auto">
           <div className="mb-12">
             <h2 className="font-heading text-[clamp(1.6rem,3.5vw,2.4rem)] text-[#102C26] mb-2.5">
-              Nuestras Campers
+              Nuestras Campers Destacadas
             </h2>
             <p className="text-[#3d6158] text-base max-w-[480px]">
               Cada conversión es única. Fabricadas a mano con materiales
