@@ -31,9 +31,9 @@ Este md esta para yo ir trasteando el enunciado del proyecto, y cuando no sepa q
 * [x] **Integración:** Renderizar la página de modelos consumiendo datos reales de Prisma.
 
 ### 🔵 Sprint 2: API, Seguridad y Despliegue
-* [ ] **Endpoints de API:**
-    * [ ] GET/POST para Comentarios (vinculados al ID del modelo).
-    * [ ] POST para Formulario de contacto (validación en servidor).
+* [x] **Endpoints de API:**
+    * [x] GET/POST para Comentarios (vinculados al ID del modelo).
+    * [x] POST para Formulario de contacto (validación en servidor).
 * [ ] **Autenticación:** Configurar **Auth.js** (Login / Registro / Sesiones).
 * [ ] **Control de Acceso:**
     * [ ] Restringir formulario de comentarios a usuarios logueados.

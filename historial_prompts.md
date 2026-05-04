@@ -103,3 +103,20 @@ Este documento contiene el registro de las peticiones realizadas durante el desa
 24. **Unificacin de colores de borde**: 
     - _Prompt:_ "pon los bordes de los elementos, comentarios, respuestas y formulario de aadir comentario con este color de br border-[#102C26]"
     - _Resultado:_ Se cambiaron todos los bordes de color beige (#e2d5be) por el color bosque profundo (#102C26) en todos los elementos de la seccin de comentarios.
+
+25. **RevisiÃ³n de Endpoints API**:
+    - _Prompt:_ "he creado dos rutas de endpoints nuevas, es la primera vez que las hago, revisa que no haya no haya ninguna cosa mal"
+    - _Resultado:_ Se corrigieron importaciones faltantes, tipos de ID (de Int a String), nombres de modelos y se optimizÃ³ la estructura segÃºn Next.js 16.
+
+
+28. **CreaciÃ³n y CorrecciÃ³n de API de Comentarios**:
+    - _Prompt:_ "como ves la ruta para los comentarios"
+    - _Resultado:_ Se renombrÃ³ la carpeta coments a comments para corregir la ortografÃ­a. Se corrigiÃ³ el acceso a Prisma de prisma.coments a prisma.comment (modelo correcto en el schema).
+
+29. **Corrección de API de Contacto**:
+    - _Prompt:_ "esta es para las solicitudes de comunicacion... solo quiero get y post, como lo ves?"
+    - _Resultado:_ Se renombró outer.js a oute.js (convención de Next.js). Se corrigió el nombre del modelo a prisma.contactRequest. Se eliminó el include de user ya que no existe en el esquema para este modelo.
+
+30. **CRUD de Usuarios con Encriptación**:
+    - _Prompt:_ "ahora este es el de los usuarios, si que quiero crud total... aplica encriptacion de password"
+    - _Resultado:_ Se instaló cryptjs. Se implementó el CRUD completo para usuarios. Se añadió encriptación de contraseñas con salt de 10 en POST y PATCH. Se configuró select para no devolver nunca el campo password en las respuestas de la API.

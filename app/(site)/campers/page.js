@@ -14,7 +14,8 @@ export default async function CampersPage() {
             Nuestras Campers
           </h1>
           <p className="text-[#3d6158] text-lg max-w-[600px] mx-auto">
-            Descubre nuestra selección de furgonetas camperizadas. Cada una está diseñada para ofrecer el máximo confort y libertad en tus viajes.
+            Descubre nuestra selección de furgonetas camperizadas. Cada una está
+            diseñada para ofrecer el máximo confort y libertad en tus viajes.
           </p>
         </div>
 
