@@ -120,3 +120,11 @@ Este documento contiene el registro de las peticiones realizadas durante el desa
 30. **CRUD de Usuarios con Encriptación**:
     - _Prompt:_ "ahora este es el de los usuarios, si que quiero crud total... aplica encriptacion de password"
     - _Resultado:_ Se instaló cryptjs. Se implementó el CRUD completo para usuarios. Se añadió encriptación de contraseñas con salt de 10 en POST y PATCH. Se configuró select para no devolver nunca el campo password en las respuestas de la API.
+
+31. **Integración de API en Frontend (Refactorización)**:
+    - _Prompt:_ "aplica los endpoints en los sitios de la web que se necesiten... pagina principal y la de nuestras camionetsa use el get, que los formularios creen comentarios y peticiones de contacto"
+    - _Resultado:_ Se creó una utilidad lib/fetcher.js para manejar llamadas a la API local. Se refactorizaron pp/page.js, pp/(site)/campers/page.js y pp/(site)/campers/[slug]/page.js para consumir datos a través de los endpoints de la API en lugar de llamar directamente a Prisma. Se actualizaron ContactForm y CommentBox para realizar envíos vía POST a la API con manejo de estados (loading, success, error).
+
+32. **Refactorización a Fetch 'A Pelo' (Client Components)**:
+    - _Prompt:_ "cambialo, que se hagan a pelo, pero haz que sean user client en los componentes que haga falta"
+    - _Resultado:_ Se eliminó lib/fetcher.js. Se crearon los componentes de cliente CamperContent.js y CamperDetailContent.js que realizan llamadas directas a la API (etch('/api/...')) desde el navegador. Se refactorizaron las páginas para usar estos componentes, manteniendo la estructura de servidor donde es posible. En la página principal se limitó la visualización a las 3 campers más recientes.

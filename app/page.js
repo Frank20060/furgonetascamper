@@ -1,12 +1,6 @@
-import CamperCard from "@/app/_components/CamperCard";
-import { prisma } from "@/src/lib/prisma";
+import CamperContent from "./_components/CamperContent";
 
 export default async function Home() {
-  const campers = await prisma.camper.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 6,
-  });
-
   return (
     <>
       {/* ── HERO ───────────────────────────────────────────────── */}
@@ -72,10 +66,13 @@ export default async function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
-            {campers.map((c) => (
-              <CamperCard key={c.id} camper={c} />
-            ))}
+          {/* Componente Client que hace el fetch directo a la API con límite de 3 */}
+          <CamperContent limit={4} />
+          
+          <div className="mt-12 text-center">
+            <a href="/campers" className="text-[#102C26] font-bold border-b-2 border-[#102C26] pb-1 hover:text-[#7a4a1e] hover:border-[#7a4a1e] transition-all">
+              Ver todo el catálogo →
+            </a>
           </div>
         </div>
       </section>

@@ -1,11 +1,6 @@
-import CamperCard from "@/app/_components/CamperCard";
-import { prisma } from "@/src/lib/prisma";
+import CamperContent from "../../_components/CamperContent";
 
 export default async function CampersPage() {
-  const campers = await prisma.camper.findMany({
-    orderBy: { createdAt: "desc" },
-  });
-
   return (
     <div className="bg-[#F7E7CE] min-h-screen py-20 px-8">
       <div className="max-w-[1280px] mx-auto">
@@ -19,11 +14,8 @@ export default async function CampersPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-8">
-          {campers.map((c) => (
-            <CamperCard key={c.id} camper={c} />
-          ))}
-        </div>
+        {/* Componente Client que hace el fetch directo a la API (sin límite) */}
+        <CamperContent />
       </div>
     </div>
   );

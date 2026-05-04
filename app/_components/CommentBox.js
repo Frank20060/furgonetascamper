@@ -2,9 +2,49 @@
 
 import { useState } from "react";
 
-export default function CommentBox({ comments = [] }) {
+export default function CommentBox({ comments: initialComments = [], camperId }) {
+  const [comments, setComments] = useState(initialComments);
+  const [status, setStatus] = useState("idle");
+
   // REGLA: Los comentarios raíz no tienen comentID
   const rootComments = comments.filter(c => !c.comentID);
+
+  async function handleAddComment(text, rating, parentId = null) {
+    setStatus("loading");
+    try {
+      // NOTA: En una app real, el userId vendría de la sesión (Auth.js)
+      // Por ahora, como no hay Auth.js, intentamos obtener un usuario o usamos uno por defecto
+      // (Esto fallará si no hay usuarios en la DB, pero es lo correcto según el flujo solicitado)
+      
+      const res = await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text,
+          rating: rating || 5,
+          camperId,
+          comentID: parentId,
+          // Placeholder para el userId hasta que tengamos Auth.js
+          // El API fallará si este ID no existe o no se envía.
+          // En el seed el usuario normal existe, pero necesitamos su CUID.
+          userId: "clz1234567890abcdefg" // Placeholder
+        }),
+      });
+
+      if (res.ok) {
+        const newComment = await res.json();
+        setComments([newComment, ...comments]);
+        setStatus("success");
+        return true;
+      } else {
+        setStatus("error");
+        return false;
+      }
+    } catch (error) {
+      setStatus("error");
+      return false;
+    }
+  }
 
   return (
     <section className="mt-20 space-y-12">
@@ -24,6 +64,7 @@ export default function CommentBox({ comments = [] }) {
               comment={comment} 
               allComments={comments} 
               depth={0}
+              onReply={handleAddComment}
             />
           ))
         ) : (
@@ -38,20 +79,22 @@ export default function CommentBox({ comments = [] }) {
         <h4 className="font-heading text-xl text-[#102C26] mb-8 flex items-center gap-3">
           Deja tu comentario
         </h4>
-        <CommentForm />
+        <CommentForm onSubmit={handleAddComment} />
+        {status === "error" && (
+          <p className="text-red-500 text-sm mt-4">Error al publicar. Asegúrate de que hay usuarios en la DB o espera a Auth.js.</p>
+        )}
       </div>
     </section>
   );
 }
 
-function CommentItem({ comment, allComments, depth = 0 }) {
+function CommentItem({ comment, allComments, depth = 0, onReply }) {
   const [isReplying, setIsReplying] = useState(false);
   
   // Buscar respuestas a este comentario específico
   const replies = allComments.filter(c => c.comentID === comment.id);
   
   const nextDepth = depth + 1;
-  // Solo aplicamos margen si no es el primer nivel, para escalonar dentro del contenedor
   const containerStyle = depth > 0 ? "mt-4 ml-4 md:ml-12 border-l-2 border-[#102C26]/5 pl-4 md:pl-8" : "";
 
   return (
@@ -106,13 +149,16 @@ function CommentItem({ comment, allComments, depth = 0 }) {
 
               {isReplying && (
                 <div className="mt-4 p-5 bg-white rounded-xl border-2 border-[#102C26]/10 animate-in fade-in slide-in-from-top-2 duration-300 shadow-inner">
-                  <CommentForm isReply />
+                  <CommentForm isReply onSubmit={(text) => {
+                    const success = onReply(text, 5, comment.id);
+                    if (success) setIsReplying(false);
+                  }} />
                 </div>
               )}
             </div>
           </div>
 
-          {/* Renderizado recursivo de respuestas INSIDE the parent content area but after the main comment text */}
+          {/* Renderizado recursivo de respuestas */}
           {replies.length > 0 && (
             <div className="mt-6 space-y-4">
               {replies.map((reply) => (
@@ -121,6 +167,7 @@ function CommentItem({ comment, allComments, depth = 0 }) {
                   comment={reply} 
                   allComments={allComments} 
                   depth={nextDepth}
+                  onReply={onReply}
                 />
               ))}
             </div>
@@ -131,26 +178,44 @@ function CommentItem({ comment, allComments, depth = 0 }) {
   );
 }
 
-function CommentForm({ isReply = false }) {
+function CommentForm({ isReply = false, onSubmit }) {
+  const [text, setText] = useState("");
+  const [rating, setRating] = useState(5);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!text.trim()) return;
+    const success = await onSubmit(text, rating);
+    if (success) setText("");
+  };
+
   return (
-    <form className="space-y-4">
+    <form className="space-y-4" onSubmit={handleSubmit}>
       {!isReply && (
         <div className="flex items-center gap-6 mb-2 bg-[#F7E7CE]/30 p-4 rounded-xl w-fit">
           <p className="text-sm font-bold text-[#102C26] uppercase tracking-wider">Tu valoración:</p>
           <div className="flex gap-2 text-2xl cursor-pointer text-[#7a4a1e]">
-            {"★★★★★".split("").map((s, i) => (
-              <span key={i} className="hover:scale-125 transition-transform hover:text-[#102C26]">☆</span>
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span 
+                key={star} 
+                onClick={() => setRating(star)}
+                className={`hover:scale-125 transition-transform ${star <= rating ? "text-[#7a4a1e]" : "text-[#7a9990]/30"}`}
+              >
+                ★
+              </span>
             ))}
           </div>
         </div>
       )}
       <textarea 
+        value={text}
+        onChange={(e) => setText(e.target.value)}
         placeholder={isReply ? "Escribe tu respuesta..." : "Cuéntanos tu experiencia con esta camper..."}
         className="w-full bg-white border-2 border-[#102C26] rounded-2xl p-4 text-[#102C26] font-medium placeholder:text-[#7a9990]/50 focus:outline-none focus:border-[#102C26] transition-all resize-none min-h-[100px] shadow-sm"
       ></textarea>
       <div className="flex justify-end">
         <button 
-          type="button"
+          type="submit"
           className={`font-bold uppercase tracking-[0.2em] rounded-xl transition-all shadow-md active:translate-y-0 ${
             isReply 
               ? "bg-[#102C26] text-[#F7E7CE] text-[0.7rem] px-6 py-3" 
