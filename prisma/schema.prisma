@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,53 +7,47 @@ datasource db {
 }
 
 model Camper {
-  id             String   @id @default(cuid())
-  slug           String   @unique
-  brand          String   // Añadido: Marca (ej. Volkswagen)
-  model          String   // Puesto en minúscula
-  year           Int?     // Añadido: Año del vehículo
-  mileage        Int?     // Añadido: Kilometraje
-  description    String?  // Cambiado de 'Comentario'
-  contactRequest String?  // Puesto en minúscula
-  price          Int      // Guardado idealmente en céntimos, o cambiar a Float/Decimal
-  imageUrl       String?  // Cambiado a imageUrl (o podrías usar images String[])
-  isAvailable    Boolean  @default(true) // Añadido: ¿Está disponible?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt // Añadido: Auto-actualiza la fecha al modificar
+  id             String    @id @default(cuid())
+  slug           String    @unique
+  brand          String
+  model          String
+  year           Int?
+  mileage        Int?
+  description    String?
+  contactRequest String?
+  price          Int
+  imageUrl       String?
+  isAvailable    Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
   comments       Comment[]
 }
 
-enum Role {
-  USER
-  EDITOR
-  ADMIN
-}
-
-// User que puede ser Admin, Staff (Editor) o Usuario
 model User {
-  id          String   @id @default(cuid())
-  email       String   @unique
-  password    String
-  name        String?
-  profileImg  String?
-  role        Role     @default(USER)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  comments    Comment[]
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String?
+  role         Role      @default(USER)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  passwordHash String
+  comments     Comment[]
+  Post         Post[]
 }
 
-// Puede estar relacionado con un camper o otro comment
-model Comment{
-  id          String   @id @default(cuid())
-  text        String
-  rating      Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  userId      String   
-  user        User     @relation(fields: [userId], references: [id])
-  camperId    String? 
-  camper      Camper?  @relation(fields: [camperId], references: [id])
-  comentID    String?
+model Comment {
+  id        String   @id @default(cuid())
+  text      String
+  rating    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  camperId  String?
+  parentId  String?
+  camper    Camper?  @relation(fields: [camperId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  replies   Comment[] @relation("CommentReplies")
+  parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
 }
 
 model ContactRequest {
@@ -67,4 +56,23 @@ model ContactRequest {
   email     String
   message   String
   createdAt DateTime @default(now())
+}
+
+model Post {
+  id        String   @id
+  slug      String   @unique
+  title     String
+  excerpt   String?
+  content   String
+  imageUrl  String?
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  User      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  USER
+  EDITOR
+  ADMIN
 }

@@ -1,4 +1,19 @@
-export default function Navbar() {
+import { auth } from "@/auth";
+
+export default async function Navbar() {
+  const session = await auth();
+
+  const links = [
+    ["Inicio", "/"],
+    ["Nuestras Campers", "/campers"],
+  ];
+
+  if (!session) {
+    links.push(["Login", "/login"]);
+  } else {
+    links.push(["Admin", "/admin/furgonetas"]);
+  }
+
   return (
     <header className="sticky top-0 z-[100] bg-[#102C26] border-b border-[#1a4a40] shadow-[0_2px_20px_rgba(0,0,0,.35)]">
       <div className="max-w-[1280px] mx-auto px-8 h-[72px] flex items-center justify-between gap-8">
@@ -16,10 +31,7 @@ export default function Navbar() {
 
         {/* Nav */}
         <nav aria-label="Navegación principal" className="hidden md:flex items-center gap-1">
-          {[
-            ["Inicio", "/"],
-            ["Nuestras Campers", "/campers"],
-          ].map(([label, href]) => (
+          {links.map(([label, href]) => (
             <a
               key={href}
               href={href}

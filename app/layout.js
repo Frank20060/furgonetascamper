@@ -1,7 +1,5 @@
 import { Krona_One, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/app/_components/Navbar";
-import Footer from "@/app/_components/Footer";
 
 const kronaOne = Krona_One({
   variable: "--font-krona",
@@ -24,13 +22,15 @@ export const metadata = {
   },
 };
 
+import Providers from "@/app/providers";
+
 export default function RootLayout({ children }) {
   return (
     <html lang="es" className={`${kronaOne.variable} ${ibmPlexSans.variable}`}>
       <body className="min-h-dvh flex flex-col bg-[#F7E7CE] text-[#0a1e1a]">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );

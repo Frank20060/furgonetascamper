@@ -6,8 +6,8 @@ export default function CommentBox({ comments: initialComments = [], camperId })
   const [comments, setComments] = useState(initialComments);
   const [status, setStatus] = useState("idle");
 
-  // REGLA: Los comentarios raíz no tienen comentID
-  const rootComments = comments.filter(c => !c.comentID);
+  // REGLA: Los comentarios raíz no tienen parentId
+  const rootComments = comments.filter(c => !c.parentId);
 
   async function handleAddComment(text, rating, parentId = null) {
     setStatus("loading");
@@ -23,7 +23,7 @@ export default function CommentBox({ comments: initialComments = [], camperId })
           text,
           rating: rating || 5,
           camperId,
-          comentID: parentId,
+          parentId: parentId,
           // Placeholder para el userId hasta que tengamos Auth.js
           // El API fallará si este ID no existe o no se envía.
           // En el seed el usuario normal existe, pero necesitamos su CUID.
@@ -92,7 +92,7 @@ function CommentItem({ comment, allComments, depth = 0, onReply }) {
   const [isReplying, setIsReplying] = useState(false);
   
   // Buscar respuestas a este comentario específico
-  const replies = allComments.filter(c => c.comentID === comment.id);
+  const replies = allComments.filter(c => c.parentId === comment.id);
   
   const nextDepth = depth + 1;
   const containerStyle = depth > 0 ? "mt-4 ml-4 md:ml-12 border-l-2 border-[#102C26]/5 pl-4 md:pl-8" : "";

@@ -37,7 +37,7 @@ Este md esta para yo ir trasteando el enunciado del proyecto, y cuando no sepa q
 * [ ] **Autenticación:** Configurar **Auth.js** (Login / Registro / Sesiones).
 * [ ] **Control de Acceso:**
     * [ ] Restringir formulario de comentarios a usuarios logueados.
-    * [ ] Implementar protección de rutas para roles **EDITOR** y **ADMIN**.
+    * [ ] Implementar protección de rutas para roles **EDITOR** y **ADM IN**.
 * [ ] **Despliegue:**
     * [ ] Publicar en **Vercel** u otra plataforma.
     * [ ] Configurar variables de entorno y migrar BD en producción.

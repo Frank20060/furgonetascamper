@@ -1,8 +1,10 @@
+import "dotenv/config";
 import pkg from "@prisma/client";
 const { PrismaClient } = pkg;
 import { PrismaPg } from "@prisma/adapter-pg";
 import pgPkg from "pg";
 const { Pool } = pgPkg;
+import bcrypt from "bcryptjs";
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -12,6 +14,7 @@ const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
+  const hashedPassword = await bcrypt.hash("demo1234", 10);
   await prisma.camper.createMany({
     data: [
       {
@@ -89,33 +92,33 @@ async function main() {
   if (campers.length >= 2) {
     // 1. Usuarios (1 de cada rol)
     const adminUser = await prisma.user.upsert({
-      where: { email: 'admin@furgocamper.com' },
+      where: { email: 'admin@demo.local' },
       update: {},
       create: {
-        email: 'admin@furgocamper.com',
-        password: 'password123',
+        email: 'admin@demo.local',
+        passwordHash: hashedPassword,
         name: 'Admin Principal',
         role: 'ADMIN',
       },
     });
 
     const editorUser = await prisma.user.upsert({
-      where: { email: 'editor@furgocamper.com' },
+      where: { email: 'editor@demo.local' },
       update: {},
       create: {
-        email: 'editor@furgocamper.com',
-        password: 'password123',
+        email: 'editor@demo.local',
+        passwordHash: hashedPassword,
         name: 'Editor Contenido',
         role: 'EDITOR',
       },
     });
 
     const normalUser = await prisma.user.upsert({
-      where: { email: 'user@furgocamper.com' },
+      where: { email: 'user@demo.local' },
       update: {},
       create: {
-        email: 'user@furgocamper.com',
-        password: 'password123',
+        email: 'user@demo.local',
+        passwordHash: hashedPassword,
         name: 'Usuario Viajero',
         role: 'USER',
       },
@@ -146,7 +149,7 @@ async function main() {
         text: 'Gracias por tu feedback, tomaremos nota para mejorar el colchón.',
         rating: 5,
         userId: adminUser.id,
-        comentID: comment2.id,
+        parentId: comment2.id,
         camperId: campers[1].id, // Asegurar que la respuesta también esté vinculada a la camper
       }
     });

@@ -1,9 +1,15 @@
-import { prisma } from "../../../src/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import { requireAdmin } from "@/lib/api-auth";
 
 // Obtener un usuario por ID (sin contraseña)
 export async function GET(request, context) {
+  const sessionAuth = await requireAdmin();
+  if (sessionAuth.error) {
+    return NextResponse.json({ error: sessionAuth.error }, { status: sessionAuth.status });
+  }
+
   try {
     const { id } = await context.params;
     
@@ -33,6 +39,11 @@ export async function GET(request, context) {
 
 // Actualizar un usuario (opcionalmente la contraseña)
 export async function PATCH(request, context) {
+  const sessionAuth = await requireAdmin();
+  if (sessionAuth.error) {
+    return NextResponse.json({ error: sessionAuth.error }, { status: sessionAuth.status });
+  }
+
   try {
     const { id } = await context.params;
     const body = await request.json();
@@ -41,7 +52,8 @@ export async function PATCH(request, context) {
 
     // Si viene una contraseña nueva, la encriptamos
     if (updateData.password) {
-      updateData.password = await bcrypt.hash(updateData.password, 10);
+      updateData.passwordHash = await bcrypt.hash(updateData.password, 10);
+      delete updateData.password;
     }
 
     const updatedUser = await prisma.user.update({
@@ -49,7 +61,7 @@ export async function PATCH(request, context) {
       data: updateData
     });
 
-    const { password: _, ...userWithoutPassword } = updatedUser;
+    const { passwordHash: _, ...userWithoutPassword } = updatedUser;
     return NextResponse.json(userWithoutPassword);
   } catch (error) {
     console.error("Error en PATCH /api/users/[id]:", error);
@@ -59,8 +71,18 @@ export async function PATCH(request, context) {
 
 // Borrar un usuario
 export async function DELETE(request, context) {
+  const sessionAuth = await requireAdmin();
+  if (sessionAuth.error) {
+    return NextResponse.json({ error: sessionAuth.error }, { status: sessionAuth.status });
+  }
+
   try {
     const { id } = await context.params;
+    
+    // No permitir eliminar al propio usuario
+    if (id === sessionAuth.user.id) {
+      return NextResponse.json({ error: "No puedes eliminar tu propio usuario" }, { status: 400 });
+    }
     
     await prisma.user.delete({ 
       where: { id } 
