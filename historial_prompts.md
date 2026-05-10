@@ -62,6 +62,10 @@ Este documento registra cronológicamente todas las peticiones realizadas durant
     - UC-03 (Formulario contacto validado) **AHORA FUNCIONA** ✅
     - UC-04 (Validación errores) **AHORA FUNCIONA** ✅
 
+### 38. Corrección de error de despliegue en Render (Next.js 16)
+- **Prompt:** "implementalo (referente al error de Build: Failed to collect page data for /api/campers/[id])"
+- **Resultado:** Se identificó que la ruta API no cumplía con la Regla #1 de Next.js 16. Se implementó `await params` en `app/api/campers/[id]/route.js` y se aseguró el uso del Singleton de Prisma para evitar fugas de conexión durante el build en Render.
+
 
 ### 12. Corrección de Keys Duplicadas
 - **Prompt:** "¿qué es este warning?? Encountered two children with the same key, '/'. ..."
