@@ -5,7 +5,7 @@ Este proyecto consiste en el diseño e implementación de una landing page corpo
 ## 🛠️ Stack Tecnológico
 
 *   **Framework:** Next.js 16 (App Router)
-*   **Base de Datos:** PostgreSQL (vía Docker)
+*   **Base de Datos:** PostgreSQL (Desplegada en **Neon**)
 *   **ORM:** Prisma
 *   **Autenticación:** Auth.js v5
 *   **Estilos:** Tailwind CSS v4
@@ -79,4 +79,3 @@ Este proyecto ha sido desarrollado siguiendo una metodología híbrida con asist
 
 ## 📄 Licencia
 Este proyecto se entrega bajo el marco académico del ciclo DAW2.
-

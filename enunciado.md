@@ -46,11 +46,11 @@ Este md esta para yo ir trasteando el enunciado del proyecto, y cuando no sepa q
 ---
 
 ## ✅ Casos de Prueba (Validación Final)
-- [ ] **Público:** ¿Puedo ver modelos y comentarios sin cuenta?
-- [ ] **Formulario:** ¿Se guardan las solicitudes de contacto correctamente?
-- [ ] **Auth:** ¿El sistema me impide comentar si no he iniciado sesión?
-- [ ] **Roles:** ¿El ADMIN puede ver/editar usuarios? ¿El EDITOR puede gestionar la flota?
-- [ ] **Producción:** ¿Funciona todo en la URL pública definitiva?
+- [OK] **Público:** ¿Puedo ver modelos y comentarios sin cuenta?
+- [OK] **Formulario:** ¿Se guardan las solicitudes de contacto correctamente?
+- [OK] **Auth:** ¿El sistema me impide comentar si no he iniciado sesión?
+- [OK] **Roles:** ¿El ADMIN puede ver/editar usuarios? ¿El EDITOR puede gestionar la flota?
+- [OK] **Producción:** ¿Funciona todo en la URL pública definitiva?
 
 
 
