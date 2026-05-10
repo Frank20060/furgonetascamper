@@ -4,16 +4,70 @@ import { useState } from "react";
 
 export default function ContactForm() {
   const [status, setStatus] = useState("idle"); // idle, loading, success, error
+  const [errors, setErrors] = useState({}); // Errores de validación
+
+  // Validar email
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  // Validar campos
+  const validateForm = (formData) => {
+    const newErrors = {};
+    
+    const nombre = formData.get("nombre")?.trim();
+    const email = formData.get("email")?.trim();
+    const asunto = formData.get("asunto");
+    const mensaje = formData.get("mensaje")?.trim();
+
+    if (!nombre) {
+      newErrors.nombre = "El nombre es requerido";
+    } else if (nombre.length < 3) {
+      newErrors.nombre = "El nombre debe tener al menos 3 caracteres";
+    } else if (nombre.length > 100) {
+      newErrors.nombre = "El nombre no puede exceder 100 caracteres";
+    }
+
+    if (!email) {
+      newErrors.email = "El email es requerido";
+    } else if (!isValidEmail(email)) {
+      newErrors.email = "El email no es válido";
+    }
+
+    if (!asunto) {
+      newErrors.asunto = "Selecciona un asunto";
+    }
+
+    if (!mensaje) {
+      newErrors.mensaje = "El mensaje es requerido";
+    } else if (mensaje.length < 10) {
+      newErrors.mensaje = "El mensaje debe tener al menos 10 caracteres";
+    } else if (mensaje.length > 1000) {
+      newErrors.mensaje = "El mensaje no puede exceder 1000 caracteres";
+    }
+
+    return newErrors;
+  };
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setErrors({});
     setStatus("loading");
 
     const formData = new FormData(e.target);
+    
+    // Validar cliente
+    const newErrors = validateForm(formData);
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setStatus("error");
+      return;
+    }
+
     const data = {
-      name: formData.get("nombre"),
-      email: formData.get("email"),
-      message: `${formData.get("asunto")}: ${formData.get("mensaje")}`,
+      name: formData.get("nombre").trim(),
+      email: formData.get("email").trim(),
+      message: `${formData.get("asunto")}: ${formData.get("mensaje").trim()}`,
     };
 
     try {
@@ -26,10 +80,16 @@ export default function ContactForm() {
       if (res.ok) {
         setStatus("success");
         e.target.reset();
+        // Limpiar success después de 5 segundos
+        setTimeout(() => setStatus("idle"), 5000);
       } else {
+        const errorData = await res.json();
+        setErrors({ server: errorData.error || "Error al enviar el mensaje" });
         setStatus("error");
       }
     } catch (error) {
+      console.error("Error al enviar:", error);
+      setErrors({ server: "Error de conexión. Intenta de nuevo" });
       setStatus("error");
     }
   }
@@ -47,9 +107,11 @@ export default function ContactForm() {
               id="nombre"
               name="nombre"
               placeholder="Tu nombre"
-              required
-              className="w-full bg-[#1a4a40] border border-[#2a6a5a] text-[#F7E7CE] px-4 py-3 rounded-lg focus:outline-none focus:border-[#F7E7CE] transition-colors placeholder:text-[#F7E7CE]/40"
+              className={`w-full bg-[#1a4a40] border text-[#F7E7CE] px-4 py-3 rounded-lg focus:outline-none transition-colors placeholder:text-[#F7E7CE]/40 ${
+                errors.nombre ? "border-red-500" : "border-[#2a6a5a] focus:border-[#F7E7CE]"
+              }`}
             />
+            {errors.nombre && <p className="text-red-400 text-xs">{errors.nombre}</p>}
           </div>
           <div className="space-y-2">
             <label htmlFor="email" className="text-xs font-semibold uppercase tracking-widest text-[#F7E7CE]">
@@ -60,9 +122,11 @@ export default function ContactForm() {
               id="email"
               name="email"
               placeholder="tu@email.com"
-              required
-              className="w-full bg-[#1a4a40] border border-[#2a6a5a] text-[#F7E7CE] px-4 py-3 rounded-lg focus:outline-none focus:border-[#F7E7CE] transition-colors placeholder:text-[#F7E7CE]/40"
+              className={`w-full bg-[#1a4a40] border text-[#F7E7CE] px-4 py-3 rounded-lg focus:outline-none transition-colors placeholder:text-[#F7E7CE]/40 ${
+                errors.email ? "border-red-500" : "border-[#2a6a5a] focus:border-[#F7E7CE]"
+              }`}
             />
+            {errors.email && <p className="text-red-400 text-xs">{errors.email}</p>}
           </div>
         </div>
 
@@ -74,8 +138,11 @@ export default function ContactForm() {
             <select
               id="asunto"
               name="asunto"
-              className="w-full bg-[#1a4a40] border border-[#2a6a5a] text-[#F7E7CE] px-4 py-3 rounded-lg focus:outline-none focus:border-[#F7E7CE] transition-colors appearance-none"
+              className={`w-full bg-[#1a4a40] border text-[#F7E7CE] px-4 py-3 rounded-lg focus:outline-none transition-colors appearance-none ${
+                errors.asunto ? "border-red-500" : "border-[#2a6a5a] focus:border-[#F7E7CE]"
+              }`}
             >
+              <option value="">Selecciona un asunto</option>
               <option value="presupuesto">Presupuesto personalizado</option>
               <option value="visita">Cita para visita</option>
               <option value="informacion">Información general</option>
@@ -85,6 +152,7 @@ export default function ContactForm() {
               ▼
             </div>
           </div>
+          {errors.asunto && <p className="text-red-400 text-xs">{errors.asunto}</p>}
         </div>
 
         <div className="space-y-2">
@@ -96,9 +164,11 @@ export default function ContactForm() {
             name="mensaje"
             rows="4"
             placeholder="¿En qué podemos ayudarte?"
-            required
-            className="w-full bg-[#1a4a40] border border-[#2a6a5a] text-[#F7E7CE] px-4 py-3 rounded-lg focus:outline-none focus:border-[#F7E7CE] transition-colors placeholder:text-[#F7E7CE]/40 resize-none"
+            className={`w-full bg-[#1a4a40] border text-[#F7E7CE] px-4 py-3 rounded-lg focus:outline-none transition-colors placeholder:text-[#F7E7CE]/40 resize-none ${
+              errors.mensaje ? "border-red-500" : "border-[#2a6a5a] focus:border-[#F7E7CE]"
+            }`}
           ></textarea>
+          {errors.mensaje && <p className="text-red-400 text-xs">{errors.mensaje}</p>}
         </div>
 
         <button
@@ -110,14 +180,18 @@ export default function ContactForm() {
         </button>
 
         {status === "success" && (
-          <p className="text-[#F7E7CE] text-sm text-center font-medium animate-pulse">
+          <p className="text-[#F7E7CE] text-sm text-center font-medium bg-green-900/30 border border-green-600/50 p-3 rounded-lg">
             ✓ Mensaje enviado correctamente. ¡Nos vemos pronto!
           </p>
         )}
         {status === "error" && (
-          <p className="text-red-400 text-sm text-center font-medium">
-            ✕ Error al enviar. Por favor, inténtalo de nuevo.
-          </p>
+          <div className="bg-red-900/30 border border-red-600/50 p-3 rounded-lg">
+            {errors.server && (
+              <p className="text-red-400 text-sm text-center font-medium">
+                ✕ {errors.server}
+              </p>
+            )}
+          </div>
         )}
       </form>
     </div>

@@ -48,6 +48,21 @@ Este documento registra cronológicamente todas las peticiones realizadas durant
 - **Prompt:** "haz que tenga como un poco de shadow blanco (desde el codigo de el svg) para que en fondos oscuros destaque un poco mas"
 - **Resultado:** Aplicación de un filtro `feDropShadow` blanco en el archivo `favicon.svg` para mejorar el contraste en fondos oscuros.
 
+### 25. Implementación de Seguridad en Comentarios y Validación de Contacto
+- **Prompt:** "implementa la seguridad para los comentarios y la validación del formulario de contacto. Sigue la linea que usa el proyecto."
+- **Resultado:**
+  - ✅ **lib/api-auth.js**: Agregada función `requireAuth()` para validar cualquier usuario autenticado
+  - ✅ **app/_components/CommentBox.js**: Integración de `useSession()` para obtener userId real del JWT, validación en cliente (10-500 caracteres), mensajes de error detallados, UI diferenciada para usuarios no autenticados
+  - ✅ **app/api/comments/route.js**: Protección con `requireAuth()`, validación de datos (longitud, rating, camperId), verificación de existencia de camper/usuario/comentario padre, retorno de status 201 en éxito
+  - ✅ **app/_components/ContactForm.js**: Validación en cliente (nombre 3-100 chars, email válido, mensaje 10-1000 chars), mostrador de errores inline, selector de asunto requerido
+  - ✅ **app/api/contacto/route.js**: Validación en servidor (tipos, longitudes, email válido), rate limiting (máx 5 requests/email por hora), sanitización de datos (trim)
+  - **Resultado final:** 
+    - UC-06 (Publicar comentario) **AHORA FUNCIONA** ✅
+    - UC-07 (Bloqueo sin autenticación) **AHORA FUNCIONA** ✅
+    - UC-03 (Formulario contacto validado) **AHORA FUNCIONA** ✅
+    - UC-04 (Validación errores) **AHORA FUNCIONA** ✅
+
+
 ### 12. Corrección de Keys Duplicadas
 - **Prompt:** "¿qué es este warning?? Encountered two children with the same key, '/'. ..."
 - **Resultado:** Solución del error de React en `Footer.js` cambiando el atributo `key` para que use el texto del enlace en lugar de la URL (que estaba duplicada como `/`).
@@ -139,3 +154,15 @@ Este documento registra cronológicamente todas las peticiones realizadas durant
 ### 34. Mejora del Historial de Prompts
 - **Prompt:** "mejora el historial de prompts para que se vea mas profesional"
 - **Resultado:** Se reescribió completamente el historial de prompts corrigiendo errores tipográficos, estandarizando el formato, mejorando la redacción y organizando la información de manera más profesional y coherente.
+
+### 35. Lógica de Registro y Redirección por Roles
+- **Prompt:** "haz que si hay login y el usuario es admin que se loge y vaya a la pagina de admin, sino que vaya a la pagina de el menu" y "añade la logica para crear nuevos usuarios en el formulario de registros"
+- **Resultado:** Se implementó la redirección dinámica basada en roles (`ADMIN`/`EDITOR` a `/admin/furgonetas`, `USER` a `/`) tras el login. Se actualizó `register/page.js` para conectar con la API de creación de usuarios e iniciar sesión automáticamente tras el éxito.
+
+### 36. Protección de la Página de Contacto
+- **Prompt:** "Revisa la pagina de contato, hay que verificar que haya usuario logueado antes de mandarla para mas seguridad"
+- **Resultado:** Se añadió una comprobación de sesión mediante `auth()` en `app/(site)/contacto/page.js`. Si el usuario no está autenticado, es redirigido a la página de login con un `callbackUrl` para volver a la página de contacto tras el inicio de sesión.
+
+### 37. Apertura de Formulario de Contacto a Visitantes
+- **Prompt:** "ok, perdona, hay que modificar, un usuario no logeado si que puede mandar el formulario de contacto. Pero tiene que tener un control de errores bueno..."
+- **Resultado:** Se eliminó la restricción de autenticación en la página de contacto para permitir el acceso a visitantes no logueados. Se aseguró que el componente `ContactForm.js` mantuviera las validaciones UC-03 y UC-04 para un correcto control de errores y feedback visual.

@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { auth, signOut } from "@/auth";
 
 export default async function Navbar() {
   const session = await auth();
@@ -11,8 +11,10 @@ export default async function Navbar() {
   if (!session) {
     links.push(["Login", "/login"]);
   } else {
+    if (session.user?.role === "EDITOR" || session.user?.role === "ADMIN") {
     links.push(["Admin", "/admin/furgonetas"]);
   }
+}
 
   return (
     <header className="sticky top-0 z-[100] bg-[#102C26] border-b border-[#1a4a40] shadow-[0_2px_20px_rgba(0,0,0,.35)]">
@@ -40,6 +42,21 @@ export default async function Navbar() {
               {label}
             </a>
           ))}
+
+          {session && (
+            <form
+              action={async () => {
+                "use server";
+                await signOut({ redirectTo: "/" });
+              }}
+              className="ml-1"
+            >
+              <button className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer">
+                Cerrar sesión
+              </button>
+            </form>
+          )}
+
           <a
             href="/contacto"
             className="ml-2 bg-[#F7E7CE] text-[#102C26] text-sm font-semibold px-4 py-2 rounded-md border-2 border-transparent transition-all duration-200 hover:bg-transparent hover:text-[#F7E7CE] hover:border-[#F7E7CE] hover:-translate-y-px"

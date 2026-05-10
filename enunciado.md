@@ -51,3 +51,18 @@ Este md esta para yo ir trasteando el enunciado del proyecto, y cuando no sepa q
 - [ ] **Auth:** ¿El sistema me impide comentar si no he iniciado sesión?
 - [ ] **Roles:** ¿El ADMIN puede ver/editar usuarios? ¿El EDITOR puede gestionar la flota?
 - [ ] **Producción:** ¿Funciona todo en la URL pública definitiva?
+
+
+
+
+
+
+
+
+
+
+x - Comentarios NO Funcionan (BUG CRÍTICO)
+x - API de Comentarios SIN Seguridad (CRÍTICO)
+mas o menos - Formulario de Contacto SIN Validación
+x - NO Hay Registro de Usuarios
+NO Está Desplegado
