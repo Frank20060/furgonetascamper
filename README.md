@@ -4,12 +4,12 @@ Este proyecto consiste en el diseño e implementación de una landing page corpo
 
 ## 🛠️ Stack Tecnológico
 
-*   **Framework:** Next.js 16 (App Router)
-*   **Base de Datos:** PostgreSQL (Desplegada en **Neon**)
-*   **ORM:** Prisma
-*   **Autenticación:** Auth.js v5
-*   **Estilos:** Tailwind CSS v4
-*   **Seguridad:** Bcryptjs para hashing de contraseñas y `proxy.js` para protección de rutas.
+- **Framework:** Next.js 16 (App Router)
+- **Base de Datos:** PostgreSQL (Desplegada en **Neon**)
+- **ORM:** Prisma
+- **Autenticación:** Auth.js v5
+- **Estilos:** Tailwind CSS v4
+- **Seguridad:** Bcryptjs para hashing de contraseñas y `proxy.js` para protección de rutas.
 
 ## 🚀 Características Principales
 
@@ -25,17 +25,20 @@ Este proyecto consiste en el diseño e implementación de una landing page corpo
 Sigue estos pasos para ejecutar el proyecto en tu entorno local:
 
 ### 1. Clonar el repositorio
+
 ```bash
 git clone <url-del-repositorio>
 cd furgonetascamper
 ```
 
 ### 2. Instalar dependencias
+
 ```bash
 npm install
 ```
 
 ### 3. Configurar variables de entorno
+
 Crea un archivo `.env.local` en la raíz del proyecto con el siguiente contenido (ajusta según sea necesario):
 
 ```env
@@ -44,33 +47,39 @@ AUTH_SECRET="tu_secreto_generado_con_npx_auth_secret"
 ```
 
 ### 4. Levantar la base de datos (Docker)
+
 Asegúrate de tener Docker instalado y ejecuta:
+
 ```bash
 docker compose up -d
 ```
 
 ### 5. Preparar la Base de Datos
+
 Ejecuta las migraciones y carga los datos iniciales (seed):
+
 ```bash
 npx prisma migrate dev
 npx prisma db seed
 ```
 
 ### 6. Ejecutar en desarrollo
+
 ```bash
 npm run dev
 ```
+
 La aplicación estará disponible en http://localhost:3000.
 
 ## 🔐 Credenciales de Prueba
 
 El script de `seed.js` crea automáticamente tres usuarios para probar las restricciones de rol (Contraseña para todos: `demo1234`):
 
-| Rol | Email | Uso |
-| :--- | :--- | :--- |
-| **ADMIN** | `admin@demo.local` | Acceso total al panel de control y gestión de usuarios. |
-| **EDITOR** | `editor@demo.local` | Gestión de flota y contenido. |
-| **USER** | `user@demo.local` | Usuario estándar, puede publicar comentarios. |
+| Rol        | Email               | Uso                                                     |
+| :--------- | :------------------ | :------------------------------------------------------ |
+| **ADMIN**  | `admin@demo.local`  | Acceso total al panel de control y gestión de usuarios. |
+| **EDITOR** | `editor@demo.local` | Gestión de flota y contenido.                           |
+| **USER**   | `user@demo.local`   | Usuario estándar, puede publicar comentarios.           |
 
 ## 🌐 Demostración en Vivo
 
@@ -92,8 +101,10 @@ git log --oneline
 ```
 
 Commits clave:
+
 - **Sprint 1:** Diseño y BD (commits hasta "datos de pruebas generados con la seed")
 - **Sprint 2:** Auth.js, CRUD, Seguridad (commits de "CRUD funcional" en adelante)
 
 ## 📄 Licencia
+
 Este proyecto se entrega bajo el marco académico del ciclo DAW2.
