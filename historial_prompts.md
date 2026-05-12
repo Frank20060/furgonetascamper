@@ -170,3 +170,18 @@ Este documento registra cronológicamente todas las peticiones realizadas durant
 ### 37. Apertura de Formulario de Contacto a Visitantes
 - **Prompt:** "ok, perdona, hay que modificar, un usuario no logeado si que puede mandar el formulario de contacto. Pero tiene que tener un control de errores bueno..."
 - **Resultado:** Se eliminó la restricción de autenticación en la página de contacto para permitir el acceso a visitantes no logueados. Se aseguró que el componente `ContactForm.js` mantuviera las validaciones UC-03 y UC-04 para un correcto control de errores y feedback visual.
+
+### 38. Verificación de Despliegue en Producción (UC-11 Smoke Tests)
+- **Prompt:** "revisa ahora" (verificación del git pull) y confirmación de URL de producción: https://furgonetascamper.onrender.com/
+- **Resultado:** Se actualizó el README.md con la URL de demostración en Render. Se ejecutaron smoke tests completos en producción validando todos los UC:
+  - ✅ UC-11a: Home page cargando correctamente
+  - ✅ UC-11b: Catálogo de campers con todas las tarjetas
+  - ✅ UC-11c: Detalle de camper (layout 2 columnas, imagen + info)
+  - ✅ UC-11d: Comentarios protegidos por autenticación (visitante vé "Debes iniciar sesión")
+  - ✅ UC-11e: Formulario de contacto visible y validado
+  - ✅ UC-11f: Envío de contacto exitoso con confirmación visual
+  - ✅ UC-11g: Login funciona con redirección correcta
+  - ✅ UC-11h: Formulario de comentarios visible solo para usuarios autenticados
+  - ✅ UC-11i: Publicación de comentario exitosa (con estrellas y contenido)
+  
+**Conclusión:** El proyecto **IA6 cumple todos los requisitos del enunciado** y está **100% funcional en producción**.

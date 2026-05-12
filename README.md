@@ -72,10 +72,28 @@ El script de `seed.js` crea automáticamente tres usuarios para probar las restr
 | **EDITOR** | `editor@demo.local` | Gestión de flota y contenido. |
 | **USER** | `user@demo.local` | Usuario estándar, puede publicar comentarios. |
 
+## 🌐 Demostración en Vivo
+
+**URL de Producción:** https://furgonetascamper.onrender.com/
+
+Puedes probar todas las funcionalidades directamente en la versión desplegada usando las credenciales de prueba de arriba.
+
 ## 🤖 Uso de IA
 
 Este proyecto ha sido desarrollado siguiendo una metodología híbrida con asistencia de IA. Puedes consultar el registro detallado de decisiones técnicas y prompts utilizados en:
-👉 Historial de Prompts
+👉 [Historial de Prompts](historial_prompts.md)
+
+## 📋 Evidencia de Trabajo (Sprints)
+
+Puedes revisar el historial de commits en el repositorio para ver la secuencia de desarrollo incremental:
+
+```bash
+git log --oneline
+```
+
+Commits clave:
+- **Sprint 1:** Diseño y BD (commits hasta "datos de pruebas generados con la seed")
+- **Sprint 2:** Auth.js, CRUD, Seguridad (commits de "CRUD funcional" en adelante)
 
 ## 📄 Licencia
 Este proyecto se entrega bajo el marco académico del ciclo DAW2.
