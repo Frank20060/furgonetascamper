@@ -1,13 +1,13 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "../../../../lib/prisma.js";
 import { notFound } from "next/navigation";
 import CamperForm from "../../_components/CamperForm";
 import DeleteButton from "../../_components/DeleteButton";
 
 export default async function EditCamperPage({ params }) {
   const { id } = await params;
-  
+
   const camper = await prisma.camper.findUnique({
-    where: { id }
+    where: { id },
   });
 
   if (!camper) {
@@ -28,11 +28,13 @@ export default async function EditCamperPage({ params }) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Editar Furgoneta</h1>
-          <p className="text-gray-500">Actualiza la información técnica y comercial del vehículo</p>
+          <p className="text-gray-500">
+            Actualiza la información técnica y comercial del vehículo
+          </p>
         </div>
         <DeleteButton id={id} name={`${camper.brand} ${camper.model}`} />
       </div>
-      
+
       <CamperForm initialData={initialData} />
     </div>
   );

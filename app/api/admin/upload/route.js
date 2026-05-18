@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { randomUUID } from "crypto";
-import { requireEditor } from "@/lib/api-auth";
+import { requireEditor } from "../../../../lib/api-auth.js";
 
 // Llista blanca de tipus d'imatge per evitar pujades arbitraries
 const ALLOWED = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
@@ -12,7 +12,10 @@ export async function POST(request) {
   // 1) Nomes usuaris autoritzats poden pujar fitxers
   const sessionAuth = await requireEditor();
   if (sessionAuth.error) {
-    return NextResponse.json({ error: sessionAuth.error }, { status: sessionAuth.status });
+    return NextResponse.json(
+      { error: sessionAuth.error },
+      { status: sessionAuth.status },
+    );
   }
 
   // 2) Llegim form-data i validem que hi ha fitxer
@@ -38,16 +41,19 @@ export async function POST(request) {
   const ext = path.extname(file.name).slice(0, 10) || ".bin";
   const name = `${randomUUID()}${ext}`;
   const dir = path.join(process.cwd(), "public", "uploads", "furgonetas");
-  
+
   try {
     await mkdir(dir, { recursive: true });
     await writeFile(path.join(dir, name), buf);
-    
+
     // 6) Retornem URL publica per guardar-la a la BD
     const url = `/uploads/furgonetas/${name}`;
     return NextResponse.json({ url });
   } catch (error) {
     console.error("Upload error:", error);
-    return NextResponse.json({ error: "No s'ha pogut guardar el fitxer" }, { status: 500 });
+    return NextResponse.json(
+      { error: "No s'ha pogut guardar el fitxer" },
+      { status: 500 },
+    );
   }
 }

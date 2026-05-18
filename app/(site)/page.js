@@ -1,4 +1,4 @@
-import CamperContent from "@/app/_components/CamperContent";
+import CamperContent from "../_components/CamperContent";
 
 export default async function Home() {
   return (
@@ -68,9 +68,12 @@ export default async function Home() {
 
           {/* Componente Client que hace el fetch directo a la API con límite de 3 */}
           <CamperContent limit={4} />
-          
+
           <div className="mt-12 text-center">
-            <a href="/campers" className="text-[#102C26] font-bold border-b-2 border-[#102C26] pb-1 hover:text-[#7a4a1e] hover:border-[#7a4a1e] transition-all">
+            <a
+              href="/campers"
+              className="text-[#102C26] font-bold border-b-2 border-[#102C26] pb-1 hover:text-[#7a4a1e] hover:border-[#7a4a1e] transition-all"
+            >
               Ver todo el catálogo →
             </a>
           </div>

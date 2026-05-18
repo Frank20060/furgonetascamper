@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "../../../lib/prisma.js";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 
@@ -16,15 +16,19 @@ export async function POST(request) {
     if (!email || !password || !name) {
       return NextResponse.json(
         { error: "Faltan campos requeridos: email, password, name" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Validación 2: Tipos de datos
-    if (typeof email !== "string" || typeof password !== "string" || typeof name !== "string") {
+    if (
+      typeof email !== "string" ||
+      typeof password !== "string" ||
+      typeof name !== "string"
+    ) {
       return NextResponse.json(
         { error: "Email, password y name deben ser texto" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -33,7 +37,7 @@ export async function POST(request) {
     if (!isValidEmail(trimmedEmail)) {
       return NextResponse.json(
         { error: "El email no es válido" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -42,13 +46,13 @@ export async function POST(request) {
     if (trimmedName.length < 3) {
       return NextResponse.json(
         { error: "El nombre debe tener al menos 3 caracteres" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     if (trimmedName.length > 100) {
       return NextResponse.json(
         { error: "El nombre no puede exceder 100 caracteres" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -57,13 +61,13 @@ export async function POST(request) {
     if (trimmedPassword.length < 8) {
       return NextResponse.json(
         { error: "La contraseña debe tener al menos 8 caracteres" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     if (trimmedPassword.length > 128) {
       return NextResponse.json(
         { error: "La contraseña no puede exceder 128 caracteres" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -74,8 +78,11 @@ export async function POST(request) {
 
     if (existingUser) {
       return NextResponse.json(
-        { error: "Este email ya está registrado. Intenta con otro o inicia sesión" },
-        { status: 409 }
+        {
+          error:
+            "Este email ya está registrado. Intenta con otro o inicia sesión",
+        },
+        { status: 409 },
       );
     }
 
@@ -104,13 +111,13 @@ export async function POST(request) {
         message: "Registro exitoso. Ahora puedes iniciar sesión",
         user,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.error("Error en POST /api/auth/register:", error);
     return NextResponse.json(
       { error: "Error al registrar el usuario" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

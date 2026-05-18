@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "../../../lib/prisma.js";
 import CamperDetailContent from "../../../_components/CamperDetailContent";
 
 // Seguimos usando el ORM para generar rutas estáticas en build time (más eficiente)

@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "../../../../lib/prisma.js";
 import UserForm from "../../_components/UserForm";
 import { notFound } from "next/navigation";
 
@@ -11,8 +11,8 @@ export default async function EditUserPage({ params }) {
       id: true,
       email: true,
       name: true,
-      role: true
-    }
+      role: true,
+    },
   });
 
   if (!user) {

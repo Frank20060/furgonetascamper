@@ -1,4 +1,4 @@
-import { auth, signOut } from "@/auth";
+import { auth, signOut } from "../../auth.js";
 
 export default async function Navbar() {
   const session = await auth();
@@ -12,9 +12,9 @@ export default async function Navbar() {
     links.push(["Login", "/login"]);
   } else {
     if (session.user?.role === "EDITOR" || session.user?.role === "ADMIN") {
-    links.push(["Admin", "/admin/furgonetas"]);
+      links.push(["Admin", "/admin/furgonetas"]);
+    }
   }
-}
 
   return (
     <header className="sticky top-0 z-[100] bg-[#102C26] border-b border-[#1a4a40] shadow-[0_2px_20px_rgba(0,0,0,.35)]">
@@ -32,7 +32,10 @@ export default async function Navbar() {
         </a>
 
         {/* Nav */}
-        <nav aria-label="Navegación principal" className="hidden md:flex items-center gap-1">
+        <nav
+          aria-label="Navegación principal"
+          className="hidden md:flex items-center gap-1"
+        >
           {links.map(([label, href]) => (
             <a
               key={href}

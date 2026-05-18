@@ -1,13 +1,16 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "../../../lib/prisma.js";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { requireAdmin } from "@/lib/api-auth";
+import { requireAdmin } from "../../../lib/api-auth.js";
 
 // Ruta GET para listar todos los usuarios (sin contraseñas)
 export async function GET() {
   const sessionAuth = await requireAdmin();
   if (sessionAuth.error) {
-    return NextResponse.json({ error: sessionAuth.error }, { status: sessionAuth.status });
+    return NextResponse.json(
+      { error: sessionAuth.error },
+      { status: sessionAuth.status },
+    );
   }
 
   try {
@@ -36,7 +39,10 @@ export async function GET() {
 export async function POST(request) {
   const sessionAuth = await requireAdmin();
   if (sessionAuth.error) {
-    return NextResponse.json({ error: sessionAuth.error }, { status: sessionAuth.status });
+    return NextResponse.json(
+      { error: sessionAuth.error },
+      { status: sessionAuth.status },
+    );
   }
 
   try {

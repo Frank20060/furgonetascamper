@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "./lib/prisma.js";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   // En local evita errors d'host quan no hi ha AUTH_URL definida
@@ -24,7 +24,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         // 2) Busquem l'usuari a BD
         const user = await prisma.user.findUnique({ where: { email } });
         // 3) Comparem password en text pla amb hash guardat
-        if (!user || !bcrypt.compareSync(String(credentials.password), user.passwordHash)) {
+        if (
+          !user ||
+          !bcrypt.compareSync(String(credentials.password), user.passwordHash)
+        ) {
           return null;
         }
         // 4) Retornem la informacio que viatjara al token/sessio

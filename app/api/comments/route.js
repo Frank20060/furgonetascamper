@@ -1,6 +1,6 @@
 import { prisma } from "../../../lib/prisma";
 import { NextResponse } from "next/server";
-import { requireAuth } from "@/lib/api-auth";
+import { requireAuth } from "../../lib/api-auth.js";
 
 // Ruta GET para listar todos los comentarios (PÚBLICO)
 export async function GET() {
@@ -30,7 +30,7 @@ export async function POST(request) {
     if (sessionAuth.error) {
       return NextResponse.json(
         { error: sessionAuth.error },
-        { status: sessionAuth.status }
+        { status: sessionAuth.status },
       );
     }
 
@@ -42,7 +42,7 @@ export async function POST(request) {
     if (userId !== sessionAuth.user.id) {
       return NextResponse.json(
         { error: "No autorizado: No puedes comentar como otro usuario" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -50,7 +50,7 @@ export async function POST(request) {
     if (!text || !camperId) {
       return NextResponse.json(
         { error: "Faltan campos requeridos: text y camperId" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -58,14 +58,14 @@ export async function POST(request) {
     if (typeof text !== "string" || text.trim().length < 10) {
       return NextResponse.json(
         { error: "El comentario debe tener al menos 10 caracteres" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (text.trim().length > 500) {
       return NextResponse.json(
         { error: "El comentario no puede exceder 500 caracteres" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -74,7 +74,7 @@ export async function POST(request) {
       if (!rating || typeof rating !== "number" || rating < 1 || rating > 5) {
         return NextResponse.json(
           { error: "La valoración debe estar entre 1 y 5" },
-          { status: 400 }
+          { status: 400 },
         );
       }
     }
@@ -84,7 +84,7 @@ export async function POST(request) {
     if (!camper) {
       return NextResponse.json(
         { error: "La furgoneta no existe" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -93,17 +93,19 @@ export async function POST(request) {
     if (!user) {
       return NextResponse.json(
         { error: "El usuario no existe" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     // Si hay parentId, verificar que el comentario padre existe
     if (parentId) {
-      const parent = await prisma.comment.findUnique({ where: { id: parentId } });
+      const parent = await prisma.comment.findUnique({
+        where: { id: parentId },
+      });
       if (!parent) {
         return NextResponse.json(
           { error: "El comentario padre no existe" },
-          { status: 404 }
+          { status: 404 },
         );
       }
     }
