@@ -14,7 +14,7 @@ export default function AuthModal({ isOpen, onClose }) {
   const [success, setSuccess] = useState("");
   const router = useRouter();
 
-  const isValidEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+  const isValidEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
 
   const validateLoginForm = () => {
     const newErrors = {};

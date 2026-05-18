@@ -1,5 +1,6 @@
 import CamperContent from "../_components/CamperContent";
 
+
 export default async function Home() {
   return (
     <>
