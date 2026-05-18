@@ -1,9 +1,9 @@
 import { auth, signOut } from "../../auth.js";
 
-export default async function Navbar() {
+export default async function Navbar(): Promise<React.ReactNode> {
   const session = await auth();
 
-  const links = [
+  const links:[string, string][] = [
     ["Inicio", "/"],
     ["Nuestras Campers", "/campers"],
   ];
@@ -11,7 +11,9 @@ export default async function Navbar() {
   if (!session) {
     links.push(["Login", "/login"]);
   } else {
-    if (session.user?.role === "EDITOR" || session.user?.role === "ADMIN") {
+    const userRole = (session?.user as { role?: string })?.role;
+
+    if (userRole === "EDITOR" || userRole === "ADMIN") {
       links.push(["Admin", "/admin/furgonetas"]);
     }
   }

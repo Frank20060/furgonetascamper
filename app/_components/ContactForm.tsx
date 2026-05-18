@@ -1,24 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useState, ComponentProps } from "react";
+
+// 1. Ponemos las interfaces fuera del componente para que el código quede limpio
+interface FormErrors {
+  nombre?: string;
+  email?: string;
+  asunto?: string;
+  mensaje?: string;
+  server?: string; // Añadimos 'server' que lo usas en el catch
+}
+
+interface ContactPayload {
+  name: string;
+  email: string;
+  message: string;
+}
 
 export default function ContactForm() {
-  const [status, setStatus] = useState("idle"); // idle, loading, success, error
-  const [errors, setErrors] = useState({}); // Errores de validación
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  
+  // 2. Le pasamos la interfaz al useState. Ahora TS sabe qué propiedades pueden existir
+  const [errors, setErrors] = useState<FormErrors>({});
 
   // Validar email
-  const isValidEmail = (email) => {
+  const isValidEmail = (email: string): boolean => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
   // Validar campos
-  const validateForm = (formData) => {
-    const newErrors = {};
+  const validateForm = (formData: FormData): FormErrors => {
+    const newErrors: FormErrors = {};
     
-    const nombre = formData.get("nombre")?.trim();
-    const email = formData.get("email")?.trim();
-    const asunto = formData.get("asunto");
-    const mensaje = formData.get("mensaje")?.trim();
+    const nombre = (formData.get("nombre") as string | null)?.trim() || "";
+    const email = (formData.get("email") as string | null)?.trim() || "";
+    const asunto = (formData.get("asunto") as string | null)?.trim() || "";
+    const mensaje = (formData.get("mensaje") as string | null)?.trim() || "";
 
     if (!nombre) {
       newErrors.nombre = "El nombre es requerido";
@@ -49,12 +66,14 @@ export default function ContactForm() {
     return newErrors;
   };
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    if (!e) return;
     e.preventDefault();
     setErrors({});
     setStatus("loading");
 
-    const formData = new FormData(e.target);
+    const formElement = e.currentTarget as HTMLFormElement;
+    const formData = new FormData(formElement);
     
     // Validar cliente
     const newErrors = validateForm(formData);
@@ -64,10 +83,10 @@ export default function ContactForm() {
       return;
     }
 
-    const data = {
-      name: formData.get("nombre").trim(),
-      email: formData.get("email").trim(),
-      message: `${formData.get("asunto")}: ${formData.get("mensaje").trim()}`,
+    const data: ContactPayload = {
+      name: (formData.get("nombre") as string | null)?.trim() || "",
+      email: (formData.get("email") as string | null)?.trim() || "",
+      message: `${formData.get("asunto") || "Sin asunto"}: ${(formData.get("mensaje") as string | null)?.trim() || ""}`,
     };
 
     try {
@@ -79,8 +98,7 @@ export default function ContactForm() {
 
       if (res.ok) {
         setStatus("success");
-        e.target.reset();
-        // Limpiar success después de 5 segundos
+        formElement.reset(); // Usamos la referencia segura del formElement
         setTimeout(() => setStatus("idle"), 5000);
       } else {
         const errorData = await res.json();
@@ -162,7 +180,7 @@ export default function ContactForm() {
           <textarea
             id="mensaje"
             name="mensaje"
-            rows="4"
+            rows={4}
             placeholder="¿En qué podemos ayudarte?"
             className={`w-full bg-[#1a4a40] border text-[#F7E7CE] px-4 py-3 rounded-lg focus:outline-none transition-colors placeholder:text-[#F7E7CE]/40 resize-none ${
               errors.mensaje ? "border-red-500" : "border-[#2a6a5a] focus:border-[#F7E7CE]"
