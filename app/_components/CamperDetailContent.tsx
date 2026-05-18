@@ -3,22 +3,60 @@
 import { useState, useEffect } from "react";
 import CommentBox from "./CommentBox";
 
-export default function CamperDetailContent({ slug }) {
-  const [camper, setCamper] = useState(null);
-  const [loading, setLoading] = useState(true);
+// 1. Definimos la estructura de los comentarios
+interface Comment {
+  id: string;
+  author: string;
+  text: string;
+  createdAt: string;
+}
+
+// 2. Definimos la estructura de la Camper según tu base de datos
+interface Camper {
+  id: string;
+  slug: string;
+  brand: string;
+  model: string;
+  description: string;
+  year: number;
+  mileage: number;
+  price: number;
+  imageUrl?: string | null;
+  isAvailable: boolean;
+  comments: Comment[];
+}
+
+// 3. Definimos las props que recibe este componente cliente
+interface CamperDetailContentProps {
+  slug: string;
+}
+
+export default function CamperDetailContent({ slug }: CamperDetailContentProps) {
+  // Inicializamos el useState indicando que puede ser una Camper o null
+  const [camper, setCamper] = useState<Camper | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     fetch(`/api/campers/slug/${slug}`)
       .then((res) => {
-        if (!res.ok) throw new Error("Not found");
+        // En vez de lanzar un Error global que rompa Next.js,
+        // controlamos el estado si la respuesta no es correcta
+        if (!res.ok) {
+          setCamper(null);
+          setLoading(false);
+          return null;
+        }
         return res.json();
       })
-      .then((data) => {
-        setCamper(data);
-        setLoading(false);
+      .then((data: Camper | null) => {
+        if (data) {
+          setCamper(data);
+          setLoading(false);
+        }
       })
       .catch((err) => {
         console.error("Error al cargar el detalle:", err);
+        setCamper(null);
         setLoading(false);
       });
   }, [slug]);
@@ -31,6 +69,8 @@ export default function CamperDetailContent({ slug }) {
     );
   }
 
+  // Al poner este IF aquí, TypeScript se da cuenta de que si el código pasa de esta línea, 
+  // 'camper' YA NO PUEDE SER NULL. Está 100% seguro de que existe una Camper.
   if (!camper) {
     return (
       <div className="text-center py-40">
@@ -40,6 +80,7 @@ export default function CamperDetailContent({ slug }) {
     );
   }
 
+  // Ahora puedes usar camper.price sin que TypeScript llore, porque sabe que existe.
   const formattedPrice = camper.price.toLocaleString("es-ES");
 
   return (

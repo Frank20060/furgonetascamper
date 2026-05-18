@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn, getSession } from "next-auth/react";
 
@@ -12,7 +12,7 @@ function LoginForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -34,7 +34,7 @@ function LoginForm() {
 
       // Obtenim la sessió per verificar el rol de l'usuari
       const session = await getSession();
-      const role = session?.user?.role;
+      const role = (session?.user as { role?: string })?.role;
 
       // Si hi ha callbackUrl la respectem, si no, decidim segons el rol
       let next = searchParams.get("callbackUrl");

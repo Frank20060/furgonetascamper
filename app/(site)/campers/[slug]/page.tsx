@@ -1,7 +1,10 @@
-import { prisma } from "../../../lib/prisma.js";
+import { prisma } from "../../../../lib/prisma.js";
 import CamperDetailContent from "../../../_components/CamperDetailContent";
 
-// Seguimos usando el ORM para generar rutas estáticas en build time (más eficiente)
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
+
 export async function generateStaticParams() {
   const campers = await prisma.camper.findMany({
     select: { slug: true },
@@ -11,7 +14,7 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function CamperDetailPage({ params }) {
+export default async function CamperDetailPage({ params }: PageProps) {
   const { slug } = await params;
 
   return (
@@ -24,7 +27,6 @@ export default async function CamperDetailPage({ params }) {
           ← Volver al catálogo
         </a>
 
-        {/* Componente Client que hace el fetch directo a la API del detalle */}
         <CamperDetailContent slug={slug} />
       </div>
     </div>
