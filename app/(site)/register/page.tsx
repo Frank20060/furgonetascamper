@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn, getSession } from "next-auth/react";
 
@@ -14,7 +14,7 @@ function RegisterForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -53,7 +53,7 @@ function RegisterForm() {
 
       // 3. Verificación de sesión y redirección
       const session = await getSession();
-      const role = session?.user?.role;
+      const role = (session?.user as { role?: string })?.role;
       let next = searchParams.get("callbackUrl") || ((role === "ADMIN" || role === "EDITOR") ? "/admin/furgonetas" : "/");
       if (!next.startsWith("/")) next = "/";
 
