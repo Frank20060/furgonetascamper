@@ -6,8 +6,12 @@ import { redirect } from "next/navigation";
 export default async function AdminLayout({ children }) {
   const session = await auth();
 
-  // Proteccio extra a nivell de layout (el proxy ja ho fa, pero per si de cas)
   if (!session) {
+    redirect("/login");
+  }
+
+  const role = session.user?.role;
+  if (role !== "ADMIN" && role !== "EDITOR") {
     redirect("/login");
   }
 
