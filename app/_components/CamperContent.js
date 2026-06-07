@@ -11,11 +11,15 @@ export default function CamperContent({ limit = null }) {
     // Hacemos el fetch "a pelo" como se solicitó. 
     // Al ser un Client Component, la ruta relativa funciona perfectamente.
     fetch("/api/campers")
-      .then((res) => res.json())
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok || !Array.isArray(data)) {
+          throw new Error(data?.error || "Error al cargar campers");
+        }
+        return data;
+      })
       .then((data) => {
-        // Ordenamos por fecha descendente (más nuevos primero)
         const sorted = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        // Aplicamos el límite si existe
         setCampers(limit ? sorted.slice(0, limit) : sorted);
         setLoading(false);
       })

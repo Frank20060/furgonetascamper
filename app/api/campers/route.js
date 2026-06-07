@@ -9,6 +9,7 @@ export async function GET() {
     const campers = await prisma.camper.findMany();
     return NextResponse.json(campers);
   } catch (error) {
+    console.error("Error en GET /api/campers:", error);
     return NextResponse.json(
       { error: "Error al obtener las campers" },
       { status: 500 },
